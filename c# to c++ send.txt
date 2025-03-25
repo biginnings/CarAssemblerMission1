@@ -19,3 +19,11 @@ private async void btnSendMessage_Click(object sender, RoutedEventArgs e)
         MessageBox.Show("Please select a message from the dropdown.", "Error");
     }
 }
+
+string serverIp = "127.0.0.1"; // 서버 IP
+int serverPort = 54000; // 서버 포트
+
+_tcpClient = new TcpClient();
+await _tcpClient.ConnectAsync(serverIp, serverPort);
+
+_networkStream = _tcpClient.GetStream();
