@@ -1,0 +1,21 @@
+private async void btnSendMessage_Click(object sender, RoutedEventArgs e)
+{
+    string selectedMessage = ((ComboBoxItem)cbMessage.SelectedItem)?.Content.ToString();
+
+    if (!string.IsNullOrEmpty(selectedMessage))
+    {
+        byte[] data = Encoding.ASCII.GetBytes(selectedMessage);
+        await _networkStream.WriteAsync(data, 0, data.Length);
+
+        // Receive response from the server
+        byte[] buffer = new byte[1024];
+        int bytesRead = await _networkStream.ReadAsync(buffer, 0, buffer.Length);
+        string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+
+        MessageBox.Show($"Server response: {response}", "Response");
+    }
+    else
+    {
+        MessageBox.Show("Please select a message from the dropdown.", "Error");
+    }
+}
